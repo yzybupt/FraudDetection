@@ -1,0 +1,32 @@
+import csv
+import Evaluate
+import numpy as np
+
+predicted_labels = []
+with open(".//label.csv") as f:
+    f_csv = csv.reader(f)
+    for row in f_csv:
+        predicted_labels.append(row[0])
+
+true_labels = []
+with open(".//true.csv") as f:
+    f_csv = csv.reader(f)
+    for row in f_csv:
+        true_labels.append(row[0])
+
+probs = []
+with open(".//probs.csv") as f:
+    f_csv = csv.reader(f)
+    for row in f_csv:
+        probs.append(row)
+
+
+true_labels = [int(x) for x in true_labels]
+probs = [[float(y) for y in x] for x in probs]
+
+results = Evaluate.evaluate(np.array(probs), true_labels, 0.01)
+print(f"AUC:{results.AUC}")
+print(f"NDCG:{results.NDCG}")
+print(f"Sensitivity:{results.sensitivity}")
+print(f"Precision:{results.precision}")
+print(f"BAC:{results.BAC}")
